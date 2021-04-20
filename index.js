@@ -6,7 +6,8 @@ const fs = require('fs-extra');
 const fileUpload = require('express-fileupload');
 const MongoClient = require('mongodb').MongoClient;
 const port = 5000;
-// require.apply('dotenv').config
+// require('dotenv'.config);
+// require.apply('dotenv').config;
 
 //midleware
 app.use(cors());
@@ -32,6 +33,11 @@ client.connect(err => {
       })
   });
 
+  app.post('/AddServices', (req, res) =>{
+    const service = req.body;
+    console.log(service);
+  })
+
   app.post("/lessonByDate", (req, res) => {
     const date = req.body;
     const email = req.body.email;
@@ -52,6 +58,13 @@ client.connect(err => {
   })
 
   app.get('/lesson', (req, res) => {
+    appointmentCollection.find({})
+      .toArray((err, documents) => {
+        res.send(documents);
+      })
+  });
+
+  app.get('/Alllesson', (req, res) => {
     appointmentCollection.find({})
       .toArray((err, documents) => {
         res.send(documents);
@@ -89,7 +102,7 @@ client.connect(err => {
 
   app.post('/isConstructor', (req, res) => {
     const email = req.body.email;
-    doctorCollection.find({ email: email })
+    ConstructorstCollection.find({ email: email })
       .toArray((err, doctors) => {
         res.send(doctors.length > 0);
       })
