@@ -22,6 +22,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const appointmentCollection = client.db("drivingSchool").collection("appointment");
   const ConstructorstCollection = client.db("drivingSchool").collection("constructors");
+  const ServicesCollection = client.db("drivingSchool").collection("services");
   console.log("connected")
 
   app.post('/addAppointment', (req, res) => {
@@ -36,6 +37,10 @@ client.connect(err => {
   app.post('/AddServices', (req, res) =>{
     const service = req.body;
     console.log(service);
+    ServicesCollection.insertOne(service)
+      .then(result =>{
+        res.send(result.insertedCount > 0)
+      })
   })
 
   app.post("/lessonByDate", (req, res) => {
