@@ -34,6 +34,7 @@ client.connect(err => {
       })
   });
 
+  // Services Area start here
   app.post('/AddServices', (req, res) =>{
     const service = req.body;
     console.log(service);
@@ -42,6 +43,15 @@ client.connect(err => {
         res.send(result.insertedCount > 0)
       })
   })
+  app.get('/Services', (req, res) => {
+    ServicesCollection.find({})
+      .toArray((err, documents) => {
+        res.send(documents);
+      })
+  });
+  // Services Area End Here 
+
+
 
   app.post("/lessonByDate", (req, res) => {
     const date = req.body;
