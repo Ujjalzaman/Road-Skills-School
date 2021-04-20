@@ -25,6 +25,7 @@ client.connect(err => {
   const ConstructorstCollection = client.db("drivingSchool").collection("constructors");
   const ServicesCollection = client.db("drivingSchool").collection("services");
   const ReviewCollection = client.db("drivingSchool").collection("review");
+  const CartCollection = client.db("drivingSchool").collection("cart");
   console.log("connected")
 
   app.post('/addAppointment', (req, res) => {
@@ -79,6 +80,32 @@ client.connect(err => {
       })
   });
   // review end here 
+
+  //CheckOut Area Start Here 
+  app.get('/service/:id', (req, res) =>{
+    ServicesCollection.find({_id:ObjectId(req.params.id)})
+    .toArray((err, documents) => {
+      res.send(documents[0])
+    })
+  })
+
+  app.post('/checkOut', (req, res) =>{
+    const newOrder = req.body;
+    CartCollection.insertOne(newOrder)
+    .then(result =>{
+      res.send(result.insertedCount > 0)
+    })
+
+  })
+
+  app.get('/clientOrder', (req, res) => {
+    CartCollection.find({email:req.query.email})
+    .toArray((err, documents) => {
+      res.send(documents)
+    })
+  })
+  //CheckOut Area End Here 
+
 
 
 
