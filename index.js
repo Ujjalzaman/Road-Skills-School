@@ -23,6 +23,7 @@ client.connect(err => {
   const appointmentCollection = client.db("drivingSchool").collection("appointment");
   const ConstructorstCollection = client.db("drivingSchool").collection("constructors");
   const ServicesCollection = client.db("drivingSchool").collection("services");
+  const ReviewCollection = client.db("drivingSchool").collection("review");
   console.log("connected")
 
   app.post('/addAppointment', (req, res) => {
@@ -50,6 +51,24 @@ client.connect(err => {
       })
   });
   // Services Area End Here 
+
+  //Review area start
+  app.post('/AddReview', (req, res) =>{
+    const review = req.body;
+    console.log(review);
+    ReviewCollection.insertOne(review)
+      .then(result =>{
+        res.send(result.insertedCount > 0)
+      })
+  })
+
+  app.get('/review', (req, res) => {
+    ReviewCollection.find({})
+      .toArray((err, documents) => {
+        res.send(documents);
+      })
+  });
+  // review end here 
 
 
 
