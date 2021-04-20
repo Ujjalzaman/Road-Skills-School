@@ -5,6 +5,7 @@ const cors = require('cors');
 const fs = require('fs-extra');
 const fileUpload = require('express-fileupload');
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId
 const port = 5000;
 // require('dotenv'.config);
 // require.apply('dotenv').config;
@@ -50,6 +51,15 @@ client.connect(err => {
         res.send(documents);
       })
   });
+
+  app.delete('/delete/:id', (req, res) =>{
+    const id = ObjectId(req.params.id)
+    console.log("delte iem", id)
+    ServicesCollection.deleteOne({_id:id})
+    .then(result =>{
+      res.send(result)
+    })
+  })
   // Services Area End Here 
 
   //Review area start
